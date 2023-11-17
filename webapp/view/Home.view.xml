@@ -1,0 +1,12 @@
+<mvc:View controllerName="com.lab2dev.firstapplication.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+            <Button 
+                id="_IDGenButton1" 
+                text="My button" 
+                press="onHelloButtonPress" 
+                type="Emphasized"
+                />
+    </Page>
+</mvc:View>
