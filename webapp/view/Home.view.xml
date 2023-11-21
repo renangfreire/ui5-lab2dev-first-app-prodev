@@ -2,11 +2,17 @@
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
-            <Button 
-                id="_IDGenButton1" 
-                text="My button" 
-                press="onHelloButtonPress" 
-                type="Emphasized"
+            <List 
+                id="_IDGenList1"
+                headerText="Products"
+                items="{listItems>/}"
+            > 
+                <StandardListItem  
+                    type="Active"
+                    press="showMessageToast"
+                    title="{listItems>name}"
+                    counter="{listItems>count}"
                 />
+            </List>
     </Page>
 </mvc:View>
