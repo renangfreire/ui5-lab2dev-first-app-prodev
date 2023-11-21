@@ -5,14 +5,30 @@
             <List 
                 id="_IDGenList1"
                 headerText="Products"
-                items="{listItems>/}"
+                items="{productsList>/}"
             > 
-                <StandardListItem  
+                <ObjectListItem  
                     type="Active"
                     press="showMessageToast"
-                    title="{listItems>name}"
-                    counter="{listItems>count}"
-                />
+                    title="{productsList>Name}"
+                    number="{
+                        parts:[{path: 'productsList>Price'}, {path: 'productsList>CurrencyCode'}],
+                        type: 'sap.ui.model.type.Currency',
+                        formatOptions: {showMeasure: false}
+                            }"
+                    numberUnit="{productsList>CurrencyCode}"
+                > 
+                <firstStatus>
+                    <ObjectStatus
+                        text="{productsList>Status}"
+                        state="{
+                            path: 'productsList>Status',
+                            formatter: 'com.lab2dev.firstapplication.controller.Formatter.status'
+                        }" />
+			    </firstStatus>
+                <ObjectAttribute text="{productsList>WeightMeasure} {productsList>WeightUnit}" />
+                <ObjectAttribute text="{productsList>Width} x {productsList>Depth} x {productsList>Height} {productsList>DimUnit}" />
+                </ObjectListItem>
             </List>
     </Page>
 </mvc:View>
