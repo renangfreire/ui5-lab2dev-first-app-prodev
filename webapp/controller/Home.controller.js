@@ -2,13 +2,15 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
     "sap/ui/model/json/JSONModel",
-    "./Formatter"
+    "./Formatter",
+    "sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      * @param {typeof sap.m.MessageToast} MessageToast
      */
-    function (Controller, MessageToast, JSONModel, Formatter) {
+    function (Controller, MessageToast, JSONModel, Formatter, Filter, FilterOperator) {
         "use strict";
 
 
@@ -134,14 +136,26 @@ sap.ui.define([
                 const item = oEvent.getSource();
 
                 const itemTitle = item.getTitle();
-                const itemCount = item.getCounter();
+                // const itemCount = item.getCounter();
 
-                const message = `O item: ${itemTitle} foi clicado 
-                ${itemCount ? `e possui um total de ${itemCount} ${itemCount == 1 ? 'produto' : 'produtos'}` : "Não possui produtos"}`
+                const message = `O item: ${itemTitle} foi clicado`
 
                 MessageToast.show(message)
 
             },
+            onSearch(oEvent){
+                const sQuery = oEvent.getSource().getValue();
+
+                const aFilters = [];
+                if(sQuery && sQuery.length > 0){
+                    const filter = new Filter("Name", FilterOperator.Contains, sQuery)
+                    aFilters.push(filter)
+                } 
+
+                const oList = this.byId("_IDGenList1")
+                const oBinding = oList.getBinding("items")
+                oBinding.filter(aFilters)    
+            }
 
         });
     });

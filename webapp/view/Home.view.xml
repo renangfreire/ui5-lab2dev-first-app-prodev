@@ -2,6 +2,11 @@
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
+            <subHeader>
+                <OverflowToolbar>
+                    <SearchField liveChange=".onSearch" width="100%" />
+                </OverflowToolbar>
+            </subHeader>
             <List 
                 id="_IDGenList1"
                 headerText="Products"
