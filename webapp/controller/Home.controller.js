@@ -12,11 +12,12 @@ sap.ui.define([
      */
     function (Controller, MessageToast, JSONModel, Formatter, Filter, FilterOperator) {
         "use strict";
-
-
+        
         return Controller.extend("com.lab2dev.firstapplication.controller.Home", {
-            onInit: function () {
-                const productsList = [
+            onInit: async function () {
+                /*const productsList = [
+                    
+                    
                     {
                         "ProductId": "HT-1000",
                         "Category": "Laptops",
@@ -127,10 +128,13 @@ sap.ui.define([
                         "Height": 3,
                         "DimUnit": "cm"
                     }
-                ]
-                const oModel = new JSONModel(productsList);
+                ] */
+                
+                const oData = new JSONModel();
+                await oData.loadData('/json/Products.json')
 
-                this.getView().setModel(oModel, "productsList");
+                this.getView().setModel(oData, "productsList");
+                debugger
             },
             showMessageToast(oEvent){
                 const item = oEvent.getSource();
