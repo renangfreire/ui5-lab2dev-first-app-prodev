@@ -5,14 +5,17 @@ sap.ui.define([
     "./Formatter",
     "sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
+    'sap/m/library'
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      * @param {typeof sap.m.MessageToast} MessageToast
      */
-    function (Controller, MessageToast, JSONModel, Formatter, Filter, FilterOperator) {
+    function (Controller, MessageToast, JSONModel, Formatter, Filter, FilterOperator, mobileLibrary) {
         "use strict";
         
+        const PopinLayout = mobileLibrary.PopinLayout;
+
         return Controller.extend("com.lab2dev.firstapplication.controller.Home", {
             onInit: async function () {
                 /*const productsList = [
@@ -134,7 +137,6 @@ sap.ui.define([
                 await oData.loadData('/json/Products.json')
 
                 this.getView().setModel(oData, "productsList");
-                debugger
             },
             showMessageToast(oEvent){
                 const item = oEvent.getSource();
@@ -156,9 +158,49 @@ sap.ui.define([
                     aFilters.push(filter)
                 } 
 
-                const oList = this.byId("_IDGenList1")
+                const oList = this.byId("idProductsTable")
                 const oBinding = oList.getBinding("items")
                 oBinding.filter(aFilters)    
+            },
+            onPopinLayoutChanged: function() {
+                var oTable = this.byId("idProductsTable");
+                var oComboBox = this.byId("idPopinLayout");
+                var sPopinLayout = oComboBox.getSelectedKey();
+                switch (sPopinLayout) {
+                    case "Block":
+                        oTable.setPopinLayout(PopinLayout.Block);
+                        break;
+                    case "GridLarge":
+                        oTable.setPopinLayout(PopinLayout.GridLarge);
+                        break;
+                    case "GridSmall":
+                        oTable.setPopinLayout(PopinLayout.GridSmall);
+                        break;
+                    default:
+                        oTable.setPopinLayout(PopinLayout.Block);
+                        break;
+                }
+            },
+    
+            onSelect: function(oEvent) {
+                const bSelected = oEvent.getParameter("selected"),
+                    sText = oEvent.getSource().getText(),
+                    oTable = this.byId("idProductsTable"),
+                    aSticky = oTable.getSticky() || [];
+    
+                if (bSelected) {
+                    aSticky.push(sText);
+                } else if (aSticky.length) {
+                    const iElementIndex = aSticky.indexOf(sText);
+                    aSticky.splice(iElementIndex, 1);
+                }
+    
+                oTable.setSticky(aSticky);
+            },
+    
+            onToggleInfoToolbar: function(oEvent) {
+                const oTable = this.byId("idProductsTable");
+                oTable.getInfoToolbar().setVisible(!oEvent.getParameter("pressed"));
             }
 
         });
