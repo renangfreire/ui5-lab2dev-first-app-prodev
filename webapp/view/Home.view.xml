@@ -11,7 +11,7 @@
         <Table id="idProductsTable"
             inset="false"
             items="{
-                path: 'productsList>/ProductCollection',
+                path: 'productsList>/',
                 sorter: {
                     path: 'Name'
                 }
@@ -57,21 +57,10 @@
 				<Text text="Product" />
 			</Column>
 			<Column
-				minScreenWidth="Tablet"
-				demandPopin="true">
-				<Text text="Supplier" />
-			</Column>
-			<Column
 				minScreenWidth="Desktop"
 				demandPopin="true"
 				hAlign="End">
-				<Text text="Dimensions" />
-			</Column>
-			<Column
-				minScreenWidth="Desktop"
-				demandPopin="true"
-				hAlign="Center">
-				<Text text="Weight" />
+				<Text text="Quantity per unit" />
 			</Column>
 			<Column
 				hAlign="End">
@@ -82,29 +71,13 @@
 			<ColumnListItem vAlign="Middle">
 				<cells>
 					<ObjectIdentifier
-						title="{productsList>Name}"
+						title="{productsList>ProductName}"
 						text="{productsList>ProductId}"/>
+					
 					<Text
-						text="{productsList>SupplierName}" />
-					<Text
-						text="{productsList>Width} x {productsList>Depth} x {productsList>Height} {productsList>DimUnit}" />
+						text="{productsList>QuantityPerUnit}" />
 					<ObjectNumber
-						number="{productsList>WeightMeasure}"
-						unit="{productsList>WeightUnit}"
-						state="{
-							parts: [
-								{path: 'productsList>WeightMeasure'},
-								{path: 'productsList>WeightUnit'}
-							],
-                            formatter: 'com.lab2dev.firstapplication.controller.Formatter.weightState'
-						}" />
-					<ObjectNumber
-							number="{
-								parts:[{path:'productsList>Price'},{path:'productsList>CurrencyCode'}],
-								type: 'sap.ui.model.type.Currency',
-								formatOptions: {showMeasure: false}
-							}"
-							unit="{productsList>CurrencyCode}" />
+							number="{productsList>UnitPrice}" />
 				</cells>
 			</ColumnListItem>
 		</items>

@@ -2,6 +2,7 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
     "sap/ui/model/json/JSONModel",
+    "sap/ui/model/odata/v2/ODataModel",
     "./Formatter",
     "sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
@@ -11,13 +12,14 @@ sap.ui.define([
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      * @param {typeof sap.m.MessageToast} MessageToast
      */
-    function (Controller, MessageToast, JSONModel, Formatter, Filter, FilterOperator, mobileLibrary) {
+    function (Controller, MessageToast, JSONModel, ODataModel, Formatter, Filter, FilterOperator, mobileLibrary) {
         "use strict";
         
         const PopinLayout = mobileLibrary.PopinLayout;
 
         return Controller.extend("com.lab2dev.firstapplication.controller.Home", {
             onInit: async function () {
+                this.oRouter = this.getOwnerComponent().getRouter();
                 /*const productsList = [
                     
                     
@@ -133,10 +135,22 @@ sap.ui.define([
                     }
                 ] */
                 
-                const oData = new JSONModel();
-                await oData.loadData('/json/Products.json')
+                // const oData = new JSONModel();
+                // await oData.loadData('/json/Products.json')
 
-                this.getView().setModel(oData, "productsList");
+                const oModel = new ODataModel("/northwind/northwind.svc/")
+
+                oModel.read('/Products', {
+                    success: (oData) => {
+                        const oModel = new JSONModel(oData.results)
+                        debugger
+                        this.getView().setModel(oModel, "productsList");
+                    },
+                    error: (oError) => {
+                        console.error(oError)
+                    }
+                })
+
             },
             showMessageToast(oEvent){
                 const item = oEvent.getSource();
@@ -201,7 +215,6 @@ sap.ui.define([
             onToggleInfoToolbar: function(oEvent) {
                 const oTable = this.byId("idProductsTable");
                 oTable.getInfoToolbar().setVisible(!oEvent.getParameter("pressed"));
-            }
-
+            },
         });
     });
